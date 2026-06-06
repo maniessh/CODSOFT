@@ -90,4 +90,23 @@ public class NumberGuessingGame {
     static boolean askPlayAgain() {
 
     }
+    static void printRoundScore(){
+         System.out.println("  Rounds played : " + roundNumber);
+        System.out.println("  Rounds won    : " + roundsWon);
+        System.out.println("  Total score   : " + totalScore);
+
+    }
+    static void printFinalScore() {
+ System.out.println("\n╔══════════════════════════════╗");
+        System.out.println("║         FINAL SCORE          ║");
+        System.out.println("╠══════════════════════════════╣");
+        System.out.printf( "║  Rounds played : %-11d ║%n", roundNumber);
+        System.out.printf( "║  Rounds won    : %-11d ║%n", roundsWon);
+        System.out.printf( "║  Total score   : %-11d ║%n", totalScore);
+        System.out.println("╚══════════════════════════════╝");
+        System.out.println("Thanks for playing!");
+    }
+    static int readInt(){
+
+    }
 }
