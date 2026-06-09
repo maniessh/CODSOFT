@@ -1,7 +1,7 @@
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
  
-public class NumberGuessingGame {
+public class NumberGame {
  
     static final int MIN = 1;
     static final int MAX = 100;
