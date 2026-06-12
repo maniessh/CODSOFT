@@ -1,8 +1,9 @@
-import java.util.Scanner;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
 public class CurrencyConverter {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -27,8 +28,39 @@ public class CurrencyConverter {
             String line;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
-            } 
+            }
             reader.close();
+
+            String json = response.toString();
+
+            // Extract the rate for target currency using simple string parsing
+            String searchKey = "\"" + target + "\":";
+            int index = json.indexOf(searchKey);
+
+            if (index == -1) {
+                System.out.println("Target currency not found!");
+                return;
+            }
+
+            int start = index + searchKey.length();
+            int end = json.indexOf(",", start);
+            if (json.charAt(end - 1) == '}') {
+                end = json.indexOf("}", start);
+            }
+
+            String rateStr = json.substring(start, end).trim();
+            double rate = Double.parseDouble(rateStr);
+
+            double converted = amount * rate;
+
+            System.out.println("\n----- Conversion Result -----");
+            System.out.println("Exchange Rate: 1 " + base + " = " + rate + " " + target);
+            System.out.printf("%.2f %s = %.2f %s\n", amount, base, converted, target);
+
+        } catch (Exception e) {
+            System.out.println("Error fetching exchange rate: " + e.getMessage());
         }
+
+        sc.close();
     }
 }
