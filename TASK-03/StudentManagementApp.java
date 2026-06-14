@@ -130,4 +130,39 @@ class StudentManagementSystem {
 }
 
 public class StudentManagementApp {
+    private static Scanner scanner = new Scanner(System.in);
+    private static StudentManagementSystem sms = new StudentManagementSystem();
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            printMenu();
+            choice = readInt("Enter your choice: ");
+
+            switch (choice) {
+                case 1: addStudent(); break;
+                case 2: editStudent(); break;
+                case 3: removeStudent(); break;
+                case 4: searchStudent(); break;
+                case 5: displayAllStudents(); break;
+                case 6: System.out.println("Exiting... Goodbye!"); break;
+                default: System.out.println("Invalid choice. Try again.");
+            }
+            System.out.println();
+        } while (choice != 6);
+
+        scanner.close();
+    }
+
+    private static void printMenu() {
+        System.out.println("===== Student Management System =====");
+        System.out.println("1. Add New Student");
+        System.out.println("2. Edit Existing Student");
+        System.out.println("3. Remove Student");
+        System.out.println("4. Search Student");
+        System.out.println("5. Display All Students");
+        System.out.println("6. Exit");
+        System.out.println("=======================================");
+    }
+
 }
