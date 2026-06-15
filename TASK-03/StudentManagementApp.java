@@ -165,4 +165,124 @@ public class StudentManagementApp {
         System.out.println("=======================================");
     }
 
+    private static void addStudent() {
+        System.out.println("--- Add New Student ---");
+
+        int roll = readInt("Enter Roll Number: ");
+        if (sms.searchByRoll(roll) != null) {
+            System.out.println("Error: A student with this roll number already exists.");
+            return;
+        }
+
+        String name = readNonEmptyString("Enter Name: ");
+        String grade = readGrade("Enter Grade (A/B/C/D/F): ");
+        String email = readEmail("Enter Email: ");
+        double marks = readDouble("Enter Marks (0-100): ", 0, 100);
+
+        Student s = new Student(roll, name, grade, email, marks);
+        if (sms.addStudent(s)) {
+            System.out.println("Student added successfully!");
+        } else {
+            System.out.println("Failed to add student.");
+        }
+    }
+
+    private static void editStudent() {
+        System.out.println("--- Edit Student ---");
+        int roll = readInt("Enter Roll Number to edit: ");
+        Student existing = sms.searchByRoll(roll);
+
+        if (existing == null) {
+            System.out.println("No student found with roll number " + roll);
+            return;
+        }
+
+        System.out.println("Current details: " + existing);
+        System.out.println("Leave field blank to keep current value.");
+
+        System.out.print("New Name [" + existing.getName() + "]: ");
+        String name = scanner.nextLine().trim();
+
+        String grade = "";
+        while (true) {
+            System.out.print("New Grade [" + existing.getGrade() + "]: ");
+            grade = scanner.nextLine().trim();
+            if (grade.isEmpty() || isValidGrade(grade)) break;
+            System.out.println("Invalid grade. Use A, B, C, D, or F.");
+        }
+
+        String email = "";
+        while (true) {
+            System.out.print("New Email [" + existing.getEmail() + "]: ");
+            email = scanner.nextLine().trim();
+            if (email.isEmpty() || isValidEmail(email)) break;
+            System.out.println("Invalid email format.");
+        }
+
+        double marks = -1;
+        while (true) {
+            System.out.print("New Marks [" + existing.getMarks() + "]: ");
+            String marksInput = scanner.nextLine().trim();
+            if (marksInput.isEmpty()) break;
+            try {
+                marks = Double.parseDouble(marksInput);
+                if (marks < 0 || marks > 100) {
+                    System.out.println("Marks must be between 0 and 100.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format.");
+            }
+        }
+
+        if (sms.updateStudent(roll, name, grade, email, marks)) {
+            System.out.println("Student updated successfully!");
+        } else {
+            System.out.println("Update failed.");
+        }
+    }
+
+    private static void removeStudent() {
+        System.out.println("--- Remove Student ---");
+        int roll = readInt("Enter Roll Number to remove: ");
+
+        if (sms.removeStudent(roll)) {
+            System.out.println("Student removed successfully!");
+        } else {
+            System.out.println("No student found with roll number " + roll);
+        }
+    }
+
+    private static void searchStudent() {
+        System.out.println("--- Search Student ---");
+        System.out.println("1. Search by Roll Number");
+        System.out.println("2. Search by Name");
+        int option = readInt("Choose search option: ");
+
+        if (option == 1) {
+            int roll = readInt("Enter Roll Number: ");
+            Student s = sms.searchByRoll(roll);
+            if (s != null) {
+                System.out.println("Student found:");
+                System.out.println(s);
+            } else {
+                System.out.println("No student found with roll number " + roll);
+            }
+        } else if (option == 2) {
+            String name = readNonEmptyString("Enter Name (or part of name): ");
+            List<Student> results = sms.searchByName(name);
+            if (results.isEmpty()) {
+                System.out.println("No students found matching '" + name + "'");
+            } else {
+                System.out.println("Found " + results.size() + " student(s):");
+                for (Student s : results) {
+                    System.out.println(s);
+                }
+            }
+        } else {
+            System.out.println("Invalid option.");
+        }
+    }
+
 }
