@@ -285,4 +285,82 @@ public class StudentManagementApp {
         }
     }
 
+    private static void displayAllStudents() {
+        System.out.println("--- All Students ---");
+        List<Student> all = sms.getAllStudents();
+        if (all.isEmpty()) {
+            System.out.println("No students in the system.");
+            return;
+        }
+        for (Student s : all) {
+            System.out.println(s);
+        }
+        System.out.println("Total students: " + all.size());
+    }
+
+    // ---------- Input Validation Helpers ----------
+
+    private static int readInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+    }
+
+    private static double readDouble(String prompt, double min, double max) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            try {
+                double val = Double.parseDouble(input);
+                if (val < min || val > max) {
+                    System.out.println("Value must be between " + min + " and " + max + ".");
+                    continue;
+                }
+                return val;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+
+    private static String readNonEmptyString(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            if (!input.isEmpty()) return input;
+            System.out.println("This field cannot be empty.");
+        }
+    }
+
+    private static String readGrade(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim().toUpperCase();
+            if (isValidGrade(input)) return input;
+            System.out.println("Invalid grade. Use A, B, C, D, or F.");
+        }
+    }
+
+    private static boolean isValidGrade(String grade) {
+        return grade.matches("[A-Fa-f]");
+    }
+
+    private static String readEmail(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            if (isValidEmail(input)) return input;
+            System.out.println("Invalid email format. Example: name@example.com");
+        }
+    }
+
+    private static boolean isValidEmail(String email) {
+        return email.matches("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+    }
 }
